@@ -141,19 +141,35 @@
   .br-tab .tab-panel.active { display: block; }
 
   /* Quadro comparativo por dimensão */
-  .heat table { font-size: .85rem; }
-  .heat th[scope="row"] { position: sticky; left: 0; background: #ffffff; z-index: 1; white-space: nowrap; font-weight: 600; text-align: left; }
-  .heat thead th { font-size: .8rem; }
-  .heat thead th:first-child { position: sticky; left: 0; z-index: 2; }
-  .heat td { white-space: nowrap; }
+  .heat-help { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 12px 16px; background: #f8f8f8; border: 1px solid var(--line); border-radius: 4px; font-size: .9rem; margin: 8px 0 4px; }
+  .heat-help .help-txt { flex-basis: 100%; color: var(--muted); font-size: .85rem; }
+  .chip { display: inline-block; padding: 2px 10px; border-radius: 999em; font-size: .85rem; font-weight: 600; }
+  .chip.h-good, .heat td.h-good { background: #e3f5e1; color: #154c21; }
+  .chip.h-bad, .heat td.h-bad { background: #fff3f2; color: #b50909; }
+  .chip.h-neu, .heat td.h-neu { background: #f0f0f0; color: #555555; }
+  .chip.h-na { background: #ffffff; color: #888888; border: 1px dashed #adadad; }
+  .heat-summary { margin: 12px 0 0; padding: 12px 16px; border-left: 4px solid var(--primary); background: var(--primary-soft); font-size: .95rem; }
+  .heat-summary p { margin: 0 0 4px; max-width: none; }
+  .heat-summary p:last-child { margin: 0; }
+  .heat table { font-size: .88rem; }
+  .heat thead th { font-size: .8rem; font-weight: 600; vertical-align: bottom; min-width: 7.5rem; line-height: 1.25; }
+  .heat thead th .h-dir { display: block; font-weight: 400; color: var(--muted); margin-top: 4px; }
+  .heat thead th:first-child, .heat th[scope="row"] { position: sticky; left: 0; z-index: 1; background: #ffffff; text-align: left; white-space: nowrap; min-width: 12rem; }
+  .heat thead th:first-child { z-index: 2; background: var(--surface-2); }
+  .heat th[scope="row"] { font-weight: 600; }
+  .heat td { white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; }
   .br-table.heat tbody td, .br-table.heat tbody tr:nth-child(even) td, .br-table.heat tbody tr:hover td { background: #ffffff; }
-  .br-table.heat tbody td.h-good { background: #e3f5e1 !important; color: #154c21; }
-  .br-table.heat tbody td.h-bad { background: #fff3f2 !important; color: #b50909; }
-  .br-table.heat tbody td.h-neu { background: #f6f6f6 !important; color: #555555; }
+  .br-table.heat tbody td.h-good { background: #e3f5e1 !important; }
+  .br-table.heat tbody td.h-bad { background: #fff3f2 !important; }
+  .br-table.heat tbody td.h-neu { background: #f0f0f0 !important; }
   .br-table.heat tbody td.h-na { color: #888888; }
-  .br-table.heat tbody tr:hover th { background: #edf5ff; }
-  .br-table.heat tr.h-mt th, .br-table.heat tbody tr.h-mt td { background: #edf5ff; font-weight: 700; border-bottom: 2px solid #1351b4; }
-  .heat th.h-reg { color: #0c326f; border-top: 1px solid #cccccc; }
+  .br-table.heat tbody td.score { text-align: left; font-size: .82rem; color: var(--text); background: #ffffff !important; border-right: 2px solid var(--line); }
+  .score .sg { color: #154c21; font-weight: 700; } .score .sb { color: #b50909; font-weight: 700; }
+  .br-table.heat tbody tr.h-group th { background: #ffffff; color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; padding-top: 14px; }
+  .br-table.heat tbody tr.h-mt th, .br-table.heat tbody tr.h-mt td { background: #edf5ff !important; font-weight: 700; color: var(--text); }
+  .br-table.heat tbody tr.h-reg th { color: var(--primary-dark); }
+  @media (max-width: 575px) { .heat thead th:first-child, .heat th[scope="row"] { min-width: 7.5rem; max-width: 9rem; white-space: normal; } .heat thead th { min-width: 6rem; } }
+  .heat .table-foot { padding: 10px 16px; font-size: .82rem; color: var(--muted); border-top: 1px solid var(--line); }
   #heat-tabs { margin-top: 8px; }
   #heat-tabs button { font-size: .88rem; padding: 10px 12px; }
   /* Matriz SWOT */
@@ -265,11 +281,20 @@
     </div>
 
     <h3 id="comparacao">Comparação por dimensão</h3>
-    <p class="section-intro">Os 13 municípios e a região, com e sem Rondonópolis, lado a lado em cada dimensão, comparados com Mato Grosso. A região também pode ser escolhida no seletor "Por município", abaixo, para ver todas as abas.</p>
+    <p class="section-intro">Como cada município, e a região como um todo, se sai em relação a Mato Grosso em cada dimensão. Escolha a dimensão nas abas abaixo.</p>
+    <div class="heat-help" aria-label="Como ler a tabela">
+      <b>Como ler:</b>
+      <span class="chip h-good">▲ melhor que MT</span>
+      <span class="chip h-neu">● próximo de MT</span>
+      <span class="chip h-bad">▼ pior que MT</span>
+      <span class="chip h-na">– sem dado</span>
+      <span class="help-txt">"Próximo" significa até 10% acima ou abaixo do valor de MT. Cada coluna indica se, naquele indicador, um valor maior é melhor (↑) ou pior (↓). A coluna "Placar" soma quantos indicadores estão melhores e piores que MT.</span>
+    </div>
     <div class="br-tab"><nav class="tab-nav" id="heat-tabs" aria-label="Dimensão"></nav></div>
+    <div class="heat-summary" id="heat-summary" aria-live="polite"></div>
     <div class="br-table heat">
-      <div class="table-header"><div class="table-sub" id="heat-note"></div></div>
       <div class="table-scroll"><table id="heat"></table></div>
+      <div class="table-foot" id="heat-note"></div>
     </div>
   </section>
 
@@ -647,6 +672,8 @@ function renderEvol(i){
 }
 
 // ---------- Comparação por dimensão (visão regional) ----------
+const D1_LABEL = {"AGR-01":"Peso da agropecuária na economia","AGR-02":"Valor das lavouras por hectare","AGR-03":"Crescimento do rebanho bovino","IND-01":"Peso da indústria na economia","IND-02":"Crescimento do emprego industrial","IND-03":"Salário médio na indústria","CS-01":"Peso dos serviços na economia","CS-02":"Crescimento do emprego em comércio e serviços","CS-03":"Empresas por mil habitantes","EST-01":"PIB per capita","EST-02":"Peso da administração pública na economia","EST-03":"Empregos formais por 100 habitantes","EST-04":"Concentração do emprego em poucos setores","EST-05":"Receita própria do município"};
+const DIM_Q = {d1:"Como está a economia?", d2:"Como estão os ativos estratégicos e a inserção externa?", social:"Como está o desenvolvimento social?", ambiental:"Como está a situação ambiental?", d5:"Como está a infraestrutura?", d6:"Como está a gestão pública?"};
 const HEAT_DIMS = [{id:"d1", nome:"D1 Econômica"}].concat(D.heat.map(h => ({id:h.id, nome:h.nome})));
 function hcls(v, ref, sentido){
   if (v == null || ref == null) return "h-na";
@@ -654,27 +681,40 @@ function hcls(v, ref, sentido){
   return d > band ? "h-good" : d < -band ? "h-bad" : "h-neu";
 }
 const HSYM = {"h-good":"▲ ", "h-bad":"▼ ", "h-neu":"● ", "h-na":""};
+const HWORD = {"h-good":"melhor que MT", "h-bad":"pior que MT", "h-neu":"próximo de MT", "h-na":"sem dado"};
 function fmtH(v, dec){ return v == null ? "–" : nf(v, dec); }
-function renderHeat(dim){
-  const t = document.getElementById("heat"); let head, body, mtRow;
-  const ents = M.map((m,i) => ({i, nome: isReg(i) ? m : m, reg: isReg(i)}));
-  const rowLabel = e => `<th scope="row" class="${e.reg ? "h-reg" : ""}">${esc(e.nome)}</th>`;
+function heatModel(dim){
   if (dim === "d1"){
-    const I = D.indicadores;
-    head = `<tr><th scope="col">Município</th>${I.map(ind => `<th scope="col" class="num" title="${esc(ind.nome)}">${ind.cod.replace("-","\u2011")}<br><small class="muted">${esc(ind.unid)}</small></th>`).join("")}</tr>`;
-    mtRow = `<tr class="h-mt"><th scope="row">Mato Grosso</th>${I.map(ind => `<td class="num">${ind.refMT==null?"–":fmtVal(ind, ind.refMT)}</td>`).join("")}</tr>`;
-    const k = c => c==="Força" ? "h-good" : c==="Fraqueza" ? "h-bad" : c==="Neutro" ? "h-neu" : "h-na";
-    body = ents.map(e => `<tr>${rowLabel(e)}${I.map(ind => { const c = k(ind.cls[e.i]); return `<td class="num ${c}" title="${esc(ind.nome)}: ${ind.cls[e.i] || "sem dado"}">${HSYM[c]}${fmtVal(ind, ind.val[e.i])}</td>`; }).join("")}</tr>`).join("");
-    document.getElementById("heat-note").textContent = "Cores pela classificação da matriz SWOT: ▲ força, ● neutro, ▼ fraqueza (limiares da planilha).";
-  } else {
-    const h = D.heat.find(x => x.id === dim), ms = h.metrics;
-    head = `<tr><th scope="col">Município</th>${ms.map(mm => `<th scope="col" class="num">${esc(mm.nome)}<br><small class="muted">${esc(mm.unid)}${mm.sentido==="-"?" · menor é melhor":""}</small></th>`).join("")}</tr>`;
-    mtRow = `<tr class="h-mt"><th scope="row">Mato Grosso</th>${ms.map(mm => `<td class="num">${fmtH(mm.mt, mm.dec)}</td>`).join("")}</tr>`;
-    body = ents.map(e => `<tr>${rowLabel(e)}${ms.map(mm => { const v = mm.vals[e.i], c = hcls(v, mm.mt, mm.sentido); return `<td class="num ${c}">${HSYM[c]}${fmtH(v, mm.dec)}</td>`; }).join("")}</tr>`).join("");
-    const notas = ms.filter(mm => mm.nota).map(mm => mm.nome.split(",")[0]+": "+mm.nota);
-    document.getElementById("heat-note").textContent = "Comparação com Mato Grosso: ▲ melhor e ▼ pior em mais de 10%, ● dentro da faixa de ±10%." + (notas.length ? " " + notas.join(". ") + "." : "");
+    const I = D.indicadores, k = c => c==="Força" ? "h-good" : c==="Fraqueza" ? "h-bad" : c==="Neutro" ? "h-neu" : "h-na";
+    return { cols: I.map(ind => ({ label: D1_LABEL[ind.cod] || ind.nome, sub: `${ind.cod} · ${ind.ano ?? ""}`, dir: ind.sentido, full: ind.nome,
+                                   mt: ind.refMT==null ? "–" : fmtVal(ind, ind.refMT),
+                                   cell: i => ({ c: k(ind.cls[i]), txt: fmtVal(ind, ind.val[i]) }) })),
+             note: "Na dimensão econômica, a cor segue a classificação da matriz SWOT: melhor = força, próximo = neutro, pior = fraqueza, com os limiares da planilha (faixa de ±10% ou ±2 pontos percentuais em torno de MT; nos quocientes locacionais, 0,8 a 1,2)." };
   }
-  t.innerHTML = `<thead>${head}</thead><tbody>${mtRow}${body}</tbody>`;
+  const h = D.heat.find(x => x.id === dim);
+  const notas = h.metrics.filter(mm => mm.nota).map(mm => mm.nome.split(",")[0] + ": " + mm.nota.replace(/^Região e MT: /,"região e MT: ").replace(/^MT: /,"MT: "));
+  return { cols: h.metrics.map(mm => { const [lab, ano] = mm.nome.split(/, (?=[\d–]+$)/);
+             return { label: lab, sub: `${ano ? ano+" · " : ""}${mm.unid}`, dir: mm.sentido, full: mm.nome, mt: fmtH(mm.mt, mm.dec),
+                      cell: i => { const v = mm.vals[i]; return { c: hcls(v, mm.mt, mm.sentido), txt: fmtH(v, mm.dec) }; } }; }),
+           note: notas.length ? "Observações: " + notas.join("; ") + "." : "" };
+}
+function renderHeat(dim){
+  const mdl = heatModel(dim), cols = mdl.cols, n = cols.length;
+  const score = i => { let g = 0, b = 0; cols.forEach(c => { const x = c.cell(i).c; if (x==="h-good") g++; if (x==="h-bad") b++; }); return {g, b}; };
+  const scoreTxt = s => `<span class="sg">${s.g} ${s.g===1?"melhor":"melhores"}</span> · <span class="sb">${s.b} ${s.b===1?"pior":"piores"}</span>`;
+  const head = `<tr><th scope="col">Território</th><th scope="col">Placar<span class="h-dir">de ${n} indicadores</span></th>${cols.map(c => `<th scope="col" class="num" title="${esc(c.full)}">${esc(c.label)}<span class="h-dir">${esc(c.sub)}</span><span class="h-dir">${c.dir==="-" ? "↓ quanto menor, melhor" : "↑ quanto maior, melhor"}</span></th>`).join("")}</tr>`;
+  const cellHtml = (i, c) => { const x = c.cell(i); return `<td class="${x.c}" title="${esc(c.label)}: ${x.txt} (${HWORD[x.c]})">${HSYM[x.c]}${x.txt}</td>`; };
+  const row = (i, cls) => `<tr class="${cls||""}"><th scope="row">${esc(M[i])}</th><td class="score">${scoreTxt(score(i))}</td>${cols.map(c => cellHtml(i, c)).join("")}</tr>`;
+  const group = txt => `<tr class="h-group"><th scope="row" colspan="${n+2}">${txt}</th></tr>`;
+  const mtRow = `<tr class="h-mt"><th scope="row">Mato Grosso (referência)</th><td class="score">–</td>${cols.map(c => `<td>${c.mt}</td>`).join("")}</tr>`;
+  const regIdx = M.map((_,i) => i).filter(isReg), munIdx = M.map((_,i) => i).filter(i => !isReg(i));
+  document.getElementById("heat").innerHTML = `<thead>${head}</thead><tbody>${mtRow}${group("Região")}${regIdx.map(i => row(i, "h-reg")).join("")}${group("Municípios")}${munIdx.map(i => row(i)).join("")}</tbody>`;
+  // resumo em texto
+  const sum = i => { const s = score(i); return `<b>${esc(M[i])}</b>: melhor que Mato Grosso em ${s.g} de ${n} indicadores e pior em ${s.b}.`; };
+  const best = munIdx.map(i => ({i, s: score(i)})).sort((a,b) => (b.s.g-b.s.b) - (a.s.g-a.s.b));
+  const top = best.slice(0,2).map(x => M[x.i]).join(" e "), bottom = best.slice(-2).reverse().map(x => M[x.i]).join(" e ");
+  document.getElementById("heat-summary").innerHTML = `<p><b>${DIM_Q[dim]}</b></p>${regIdx.map(i => `<p>${sum(i)}</p>`).join("")}<p>Entre os municípios, o melhor saldo é de ${esc(top)}; o pior, de ${esc(bottom)}.</p>`;
+  document.getElementById("heat-note").textContent = mdl.note;
   document.querySelectorAll('#heat-tabs .tab-item').forEach(li => { const on = li.querySelector("button").dataset.dim === dim; li.classList.toggle("active", on); li.querySelector("button").setAttribute("aria-selected", on); });
 }
 document.getElementById("heat-tabs").innerHTML = `<ul role="tablist">${HEAT_DIMS.map((d,k) => `<li class="tab-item${k?"":" active"}"><button type="button" role="tab" data-dim="${d.id}" aria-selected="${k?"false":"true"}">${esc(d.nome)}</button></li>`).join("")}</ul>`;
